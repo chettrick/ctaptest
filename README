@@ -1,0 +1,82 @@
+Trivial hand-rolled C testing framework.
+
+This testing framework conforms to TAP12 (Test Anything Protocol ver 12).
+Output can be programmatically evaluated using the 'prove' command,
+  which is part of the Perl module Test::Harness, or other such utilities.
+     E.g. $ prove -ve '' program_name
+
+- Every module test needs one plan(), and then subsequent tests via ok().
+- Use todo() for tests that are made before code is written (think TDD).
+    Convert them over to ok() once the new code is in a testable state.
+- Use skip() for not running a test at all. skip() always outputs 'ok'
+    whether or not the test would actually pass.
+- Use diag() for diagnostic (informational) messages in test output.
+
+The whole testing framework is implemented with preprocessor macros.
+
+#include "test.h" in each source file that needs it.
+
+A single, independent source file should be used to organize all tests,
+  either on a module-wide basis, or a project-wide basis.
+
+/* Testing framework macros */
+plan(int total_tests);
+ok(int test, char *msg);
+todo(int test, char *msg);
+skip(int test, char *msg);
+diag(char *msg);
+
+
+/**
+ * Supply the test plan with the number of tests to run.
+ *
+ * plan() should be the first macro called, with total number of tests.
+ * If it is impossibe to know in advance the number of tests to run,
+ * then plan(test_count) as the last macro called is also correct,
+ * but not preferrable nor advised.
+ *
+ * @param total_tests Total number of tests to run.
+ */
+plan(int total_tests);
+
+/**
+ * Perform the supplied test and output whether it passed or not.
+ * A non-zero value for test is a pass. A zero value for test is a fail.
+ *
+ * @param test A boolean expression to test for truth.
+ * @param msg A string containing a short description of the test.
+ *
+ * Note: This macro outputs:	[not ok|ok] <test_num> - <msg>
+ *       and on test failure:		# Test failed in <file> at line <num>
+ */
+ok(int test, char *msg);
+
+/**
+ * Mark the supplied test as a TODO, but still run the test.
+ *
+ * @param test A boolean expression to test for truth.
+ * @param msg A string containing a short description of the test.
+ *
+ * Note: This macro outputs:	[not ok|ok] <test_num> - <msg> # TODO
+ *       and on test failure:		# Test failed in <file> at line <num>
+ */
+todo(int test, char *msg);
+
+/**
+ * Mark the supplied test as a SKIP, and do not run the test.
+ *
+ * @param test A boolean expression to test for truth.
+ * @param msg A string containing a short description of the test.
+ *
+ * Note: This macro always outputs: 'ok <test_num> <msg> # SKIP
+ */
+skip(int test, char *msg);
+
+/**
+ * Print a diagnostic message in the testing output.
+ *
+ * @param msg A string containing a short diagnostic message.
+ *
+ * Note: This macro outputs: # <msg>
+ */
+diag(char *msg);
