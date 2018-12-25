@@ -57,7 +57,7 @@ int	test_count;		/* Number of actual tests performed. */
 #define									\
 plan(total_tests)							\
 {									\
-	printf("1..%d\n", total_tests);					\
+	printf("1..%d\n", (total_tests));				\
 }
 
 /**
@@ -74,9 +74,9 @@ plan(total_tests)							\
 ok(test, msg)								\
 {									\
 	if ((test)) {							\
-		printf("ok %d - %s\n", ++test_count, msg);		\
+		printf("ok %d - %s\n", ++test_count, (msg));		\
 	} else {							\
-		printf("not ok %d - %s\n", ++test_count, msg);		\
+		printf("not ok %d - %s\n", ++test_count, (msg));	\
 		printf("\t# Test failed in %s at line %d\n",		\
 		    __FILE__, __LINE__);				\
 	}								\
@@ -95,9 +95,9 @@ ok(test, msg)								\
 todo(test, msg)								\
 {									\
 	if ((test)) {							\
-		printf("ok %d - %s # TODO\n", ++test_count, msg);	\
+		printf("ok %d - %s # TODO\n", ++test_count, (msg));	\
 	} else {							\
-		printf("not ok %d - %s # TODO\n", ++test_count, msg);	\
+		printf("not ok %d - %s # TODO\n", ++test_count, (msg));	\
 		printf("\t# Test failed in %s at line %d\n",		\
 		    __FILE__, __LINE__);				\
 	}								\
@@ -114,7 +114,7 @@ todo(test, msg)								\
 #define									\
 skip(test, msg)								\
 {									\
-	printf("ok %d - %s # SKIP\n", ++test_count, msg);		\
+	printf("ok %d - %s # SKIP\n", ++test_count, (msg));		\
 }
 
 /**
@@ -127,7 +127,7 @@ skip(test, msg)								\
 #define									\
 diag(msg)								\
 {									\
-	printf("# %s\n", msg);						\
+	printf("# %s\n", (msg));					\
 }
 
 #endif /* _TEST_H_ */
